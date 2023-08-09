@@ -58,6 +58,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 void Motor_Left(int pwm)
 {
 	if (pwm > 0) // forward
@@ -104,6 +105,17 @@ void Motor_Control(int pwm1, int pwm2)
 	// if (pwm1 < pwm2) turn left
 	Motor_Left(pwm1);
 	Motor_Right(pwm2);
+	
+}
+
+void Motor_Control_CAN(uint16_t std_id, uint8_t *buff)
+{
+	for (int i = 0; i < 7; i += 2)
+	{
+		buff[i] = buff[i] >> 8;
+	}
+	CAN1_Send_Msg(std_id, buff);
+}
 
 /* USER CODE END 0 */
 
@@ -114,7 +126,7 @@ void Motor_Control(int pwm1, int pwm2)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -138,8 +150,13 @@ int main(void)
   MX_CAN1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+	HAL_CAN_Start(&hcan1);
+	CAN1_FilterConfig();
+	if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
+	{
+		Error_Handler();
+	}
 
-	
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

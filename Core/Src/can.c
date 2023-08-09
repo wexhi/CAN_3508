@@ -118,5 +118,42 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 }
 
 /* USER CODE BEGIN 1 */
+void CAN1_FilterConfig(void)
+{
+	CAN_FilterTypeDef sFilterConfig;
+
+	sFilterConfig.FilterBank = 0;
+	sFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+	sFilterConfig.FilterIdHigh = 0x0000;
+	sFilterConfig.FilterIdLow = 0x0000;
+	sFilterConfig.FilterMaskIdHigh = 0x0000;
+	sFilterConfig.FilterMaskIdLow = 0x0000;
+	sFilterConfig.FilterFIFOAssignment = CAN_RX_FIFO0;
+	sFilterConfig.FilterActivation = ENABLE;
+	sFilterConfig.SlaveStartFilterBank = 14;
+
+	if (HAL_CAN_ConfigFilter(&hcan1, &sFilterConfig) != HAL_OK)
+	{
+		Error_Handler();
+	}
+}
+
+uint8_t CAN1_Send_Msg(uint16_t std_id, uint8_t *buff)
+{
+	
+    can1_tx_header_msg.DLC = 0x08;
+    can1_tx_header_msg.StdId = std_id;
+    can1_tx_header_msg.ExtId = 0;
+    can1_tx_header_msg.IDE = CAN_ID_STD;
+    can1_tx_header_msg.RTR = CAN_RTR_DATA;
+ 
+    if (HAL_CAN_AddTxMessage(&hcan1, &can1_tx_header_msg, buff, (uint32_t *)CAN_TX_MAILBOX0) != HAL_OK)
+    {
+        return 0;
+    }
+    return 1;
+}
+
 
 /* USER CODE END 1 */

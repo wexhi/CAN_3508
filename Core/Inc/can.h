@@ -35,13 +35,14 @@ extern "C" {
 extern CAN_HandleTypeDef hcan1;
 
 /* USER CODE BEGIN Private defines */
-
+extern CAN_TxHeaderTypeDef can1_tx_header_msg; //CAN1 Tx header message
 /* USER CODE END Private defines */
 
 void MX_CAN1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+	void CAN1_FilterConfig(void);//CAN1 filter configuration
+	uint8_t CAN1_Send_Msg(uint16_t std_id, uint8_t *buff); //CAN1 send message
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
