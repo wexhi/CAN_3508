@@ -58,6 +58,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 void Motor_Left(int pwm)
 {
 	if (pwm > 0) // forward
@@ -104,6 +105,8 @@ void Motor_Control(int pwm1, int pwm2)
 	// if (pwm1 < pwm2) turn left
 	Motor_Left(pwm1);
 	Motor_Right(pwm2);
+	
+}
 
 /* USER CODE END 0 */
 
@@ -139,7 +142,6 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-	
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */
