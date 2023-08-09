@@ -104,8 +104,7 @@ void Motor_Control(int pwm1, int pwm2)
 	// if (pwm1 < pwm2) turn left
 	Motor_Left(pwm1);
 	Motor_Right(pwm2);
-	
-}
+
 /* USER CODE END 0 */
 
 /**
